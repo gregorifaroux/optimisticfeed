@@ -1,0 +1,61 @@
+[debug] [2019-03-31T03:07:33.726Z] ----------------------------------------------------------------------
+[debug] [2019-03-31T03:07:33.728Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2019-03-31T03:07:33.728Z] CLI Version:   6.5.0
+[debug] [2019-03-31T03:07:33.728Z] Platform:      darwin
+[debug] [2019-03-31T03:07:33.728Z] Node Version:  v10.14.2
+[debug] [2019-03-31T03:07:33.729Z] Time:          Sat Mar 30 2019 23:07:33 GMT-0400 (Eastern Daylight Time)
+[debug] [2019-03-31T03:07:33.729Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-03-31T03:07:33.736Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-03-31T03:07:33.737Z] > authorizing via signed-in user
+[debug] [2019-03-31T03:07:33.737Z] [iam] checking project optimisticfeed for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2019-03-31T03:07:33.738Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/optimisticfeed:testIamPermissions  
+
+[debug] [2019-03-31T03:07:34.008Z] <<< HTTP RESPONSE 200
+[debug] [2019-03-31T03:07:34.010Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/optimisticfeed  
+ 
+[debug] [2019-03-31T03:07:34.272Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'optimisticfeed'...
+[info] 
+[info] i  deploying hosting
+[debug] [2019-03-31T03:07:34.276Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/optimisticfeed/versions  
+
+[debug] [2019-03-31T03:07:35.086Z] <<< HTTP RESPONSE 200
+[info] i  hosting[optimisticfeed]: beginning deploy...
+[info] i  hosting[optimisticfeed]: found 14 files in build
+[debug] [2019-03-31T03:07:35.099Z] [hosting] hash cache [YnVpbGQ] load error: lines is not defined
+[debug] [2019-03-31T03:07:35.188Z] [hosting] hash cache [YnVpbGQ] stored for 14 files
+[debug] [2019-03-31T03:07:35.189Z] [hosting][hash queue][FINAL]
+[debug] [2019-03-31T03:07:35.189Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/optimisticfeed/versions/4908d80c6fe6f951:populateFiles  
+ <request body omitted>
+[debug] [2019-03-31T03:07:37.385Z] <<< HTTP RESPONSE 200
+[debug] [2019-03-31T03:07:37.391Z] [hosting][populate queue][FINAL]
+[debug] [2019-03-31T03:07:37.391Z] [hosting] uploads queued: 10
+[debug] [2019-03-31T03:07:40.132Z] [hosting][upload queue][FINAL]
+[info] ✔  hosting[optimisticfeed]: file upload complete
+[debug] [2019-03-31T03:07:40.133Z] [hosting] deploy completed after 5045ms
+[debug] [2019-03-31T03:07:40.263Z] [
+  {
+    "config": {
+      "public": "build",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "site": "optimisticfeed"
+    },
+    "site": "optimisticfeed",
+    "version": "sites/optimisticfeed/versions/4908d80c6fe6f951"
+  }
+]
+[info] i  hosting[optimisticfeed]: finalizing version...
+[debug] [2019-03-31T03:07:40.263Z] >>> HTTP REQUEST PATCH https://firebasehosting.googleapis.com/v1beta1/sites/optimisticfeed/versions/4908d80c6fe6f951?updateMask=status  
+
+[debug] [2019-03-31T03:07:41.816Z] <<< HTTP RESPONSE 200
+[debug] [2019-03-31T03:07:41.816Z] [hosting] finalized version for optimisticfeed:
+[info] ✔  hosting[optimisticfeed]: version finalized
+[info] i  hosting[optimisticfeed]: releasing new version...
+[debug] [2019-03-31T03:07:41.817Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/optimisticfeed/releases?version_name=sites/optimisticfeed/versions/4908d80c6fe6f951  
+
