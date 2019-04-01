@@ -1,0 +1,2 @@
+gunicorn --reload api.app
+
