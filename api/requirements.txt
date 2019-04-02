@@ -1,2 +1,7 @@
 falcon
 gunicorn
+feedparser
+readability-lxml
+requests
+vaderSentiment
+textblob
