@@ -4,4 +4,4 @@ feedparser
 readability-lxml
 requests
 vaderSentiment
-textblob
+pathlib

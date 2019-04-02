@@ -3,13 +3,16 @@ import json, os
 import feedparser, urllib.request
 import requests
 from readability import Document
+from pathlib import Path
 
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from textblob import TextBlob
 from bs4 import BeautifulSoup
 from bs4.element import Comment
 
+import time, hashlib
+
 URL = "https://news.google.com/news/rss"
+FOLDER = "data"
 analyser = SentimentIntensityAnalyzer()
 
 
@@ -32,30 +35,17 @@ def text_from_html(body):
     soup = BeautifulSoup(body, "html.parser")
     texts = soup.findAll(text=True)
     visible_texts = filter(tag_visible, texts)
-    return u" ".join(t.strip() for t in visible_texts)
+    return " ".join(t.strip() for t in visible_texts)
 
 
-def write_sentiment(text_file, clean_doc):
+def get_sentiment(clean_doc):
+    """ Return 1 for positive 0 for neutral and -1 for negative """
     sentiment_dict = analyser.polarity_scores(clean_doc)
-    analysis = TextBlob(clean_doc)
     if sentiment_dict["compound"] >= 0.05:
-        text_file.write("Positive")
-        print("Positive")
+        return 1
     elif sentiment_dict["compound"] <= -0.05:
-        text_file.write("Negative")
-        print("Negative")
-    else:
-        text_file.write("Neutral")
-        print("Neutral")
-    print(analysis.sentiment)
-    text_file.write("\n")
-    if analysis.sentiment[0] > 0:
-        text_file.write("Positive sentiment")
-    elif analysis.sentiment[0] < 0:
-        text_file.write("Negative sentiment")
-    else:
-        text_file.write("Neutral sentiment")
-    text_file.write("\n")
+        return -1
+    return 0
 
 
 def main():
@@ -72,19 +62,22 @@ def main():
                 )
             )
             print("  " + entry.title)
-            response = requests.get(entry.link)
-            doc = Document(response.text)
-            print("title " + doc.title())
-            with open("sentiment.txt", "a+") as text_file:
-                clean_doc = doc.summary()
-                clean_doc_bs4 = text_from_html(page)
-                text_file.write("\n ----------------------------")
-                text_file.write(doc.title())
-                text_file.write("\n Readability:")
-                write_sentiment(text_file, clean_doc)
-                text_file.write("\n BS4:")
-                write_sentiment(text_file, clean_doc_bs4)
-                text_file.write("\n ----------------------------")
+            clean_doc_bs4 = text_from_html(entry.description)
+            sentiment = get_sentiment(clean_doc_bs4)
+            # Only write positive and neutral
+            if sentiment >= 0:
+                # Get content
+                response = requests.get(entry.link)
+                doc = Document(response.text)
+                # Generate unique filename
+                h = hashlib.new("ripemd160")
+                h.update(entry["link"].encode("utf-8"))
+                filename = f"{FOLDER}/{h.hexdigest()}.html"
+                if Path(filename).exists():
+                    continue
+                with open(filename, "w") as outfile:
+                    outfile.write(doc.summary())
+
         except urllib.error.HTTPError as e:
             print(e.reason)
         except urllib.error.URLError as e:
@@ -92,4 +85,7 @@ def main():
 
 
 if __name__ == "__main__":
+    start = time.time()
     main()
+    end = time.time()
+    print(end - start)
